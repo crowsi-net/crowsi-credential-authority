@@ -1,0 +1,99 @@
+[package]
+exclude = ["/registration/**", "/state/**", "/.local/**", "/.state/**", "/.data/**", "/secrets/**", "/credentials/**", "/.env", "/.env.production", "/.env.local", "/*.tgz", "/*.tar.gz", "/*.tar", "/*.zip", "/*.whl", "/*.crate", "/.ruff_cache/**", "/.mypy_cache/**", "/.tox/**", "/.nox/**", "/.hypothesis/**", "/.coverage", "/.coverage.*", "/htmlcov/**", "/lcov.info", "/junit.xml", "/*.profraw", "/*.profdata", "/*.egg-info/**", "/target/**", "/node_modules/**", "/dist/**", "/build/**", "/.cache/**", "/.pytest_cache/**", "/coverage/**"]
+name = "crowsi-credential-authority"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+description = "Account-scoped credential ownership and device-grant authority contracts for Crowsi"
+license = "Apache-2.0"
+publish = ["ecosystem-private"]
+autotests = false
+repository = "https://github.com/crowsi-net/crowsi-credential-authority"
+
+[features]
+authority-host-test-root = []
+test-support = []
+
+[workspace]
+members = ["."]
+resolver = "3"
+
+[dependencies]
+crowsi-authority-transport = { version = "=0.1.0", registry = "ecosystem-private" }
+crowsi-credential-authority-contracts = { version = "=0.10.0", registry = "ecosystem-private" }
+ed25519-dalek = "=2.2.0"
+hex = "=0.4.3"
+getrandom = "=0.3.4"
+libc = "=0.2.187"
+ihat-identity-assertion-contracts = { version = "=0.10.0", registry = "ecosystem-private" }
+nix = { version = "0.29.0", features = ["fs", "process", "signal", "user"] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+sha2 = "0.10.9"
+zeroize = { version = "=1.8.2", features = ["serde"] }
+wait-timeout = "=0.2.1"
+time = { version = "=0.3.54", features = ["formatting"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+missing_errors_doc = "allow"
+must_use_candidate = "allow"
+needless_pass_by_value = "allow"
+return_self_not_must_use = "allow"
+struct_field_names = "allow"
+todo = "deny"
+too_many_arguments = "allow"
+too_many_lines = "allow"
+unwrap_used = "deny"
+verbose_bit_mask = "allow"
+
+[[test]]
+name = "credential_authority"
+path = "tests/credential_authority.rs"
+required-features = ["test-support"]
+
+[[test]]
+name = "file_authority_store"
+path = "tests/file_authority_store.rs"
+required-features = ["test-support"]
+
+[[test]]
+name = "production_surface"
+path = "tests/production_surface.rs"
+
+[[test]]
+name = "gateway_surface"
+path = "tests/gateway_surface.rs"
+
+[[test]]
+name = "gateway_replay"
+path = "tests/gateway_replay.rs"
+required-features = ["test-support"]
+
+[[test]]
+name = "gateway_isolation"
+path = "tests/gateway_isolation.rs"
+required-features = ["test-support"]
+
+[[test]]
+name = "provider_saga"
+path = "tests/provider_saga.rs"
+required-features = ["test-support"]
+
+[[test]]
+name = "gateway_host_subprocess"
+path = "tests/gateway_host_subprocess.rs"
+required-features = ["test-support", "authority-host-test-root"]
+
+[[bin]]
+name = "crowsi-credential-authority-host"
+path = "src/bin/crowsi-credential-authority-host.rs"
+
+[[bin]]
+name = "crowsi-credential-authority-gateway"
+path = "src/bin/crowsi-credential-authority-gateway.rs"

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-authority/transfer-receipt/v1",
+  "title": "Credential transfer receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["transfer_id", "source_grant_id", "target_grant_id", "state"],
+  "properties": {
+    "transfer_id": { "type": "string", "maxLength": 128 },
+    "source_grant_id": { "type": "string", "maxLength": 128 },
+    "target_grant_id": { "type": "string", "maxLength": 128 },
+    "state": { "enum": ["Prepared", "Committed", "Cancelled"] },
+    "provider_revision": { "type": ["integer", "null"], "minimum": 1 }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-authority/coela-management-projection/v1",
+  "title": "Crowsi Coela management projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "credentials", "devices"],
+  "properties": {
+    "schema_id": { "const": "crowsi-coela-management-projection-v1" },
+    "credentials": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["credential_id", "service_id", "provider_account_ref", "alias", "class", "revision", "revoked"],
+        "properties": {
+          "credential_id": { "type": "string", "maxLength": 128 },
+          "service_id": { "type": "string", "maxLength": 128 },
+          "provider_account_ref": { "type": "string", "maxLength": 128 },
+          "alias": { "type": "string", "maxLength": 128 },
+          "class": { "enum": ["ExclusiveExportable", "Shared", "NonExportable"] },
+          "revision": { "type": "integer", "minimum": 1 },
+          "revoked": { "type": "boolean" }
+        }
+      }
+    },
+    "devices": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["device_id", "service_id", "device_proof_key_ref", "posture_state", "posture_revision", "device_revocation_epoch"],
+        "properties": {
+          "device_id": { "type": "string", "maxLength": 128 },
+          "service_id": { "type": "string", "maxLength": 128 },
+          "device_proof_key_ref": { "type": "string", "maxLength": 256 },
+          "posture_state": { "type": "string", "maxLength": 32 },
+          "posture_revision": { "type": "integer", "minimum": 1 },
+          "device_revocation_epoch": { "type": "integer", "minimum": 1 }
+        }
+      }
+    }
+  }
+}

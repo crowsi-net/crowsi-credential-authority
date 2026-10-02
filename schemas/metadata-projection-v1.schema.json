@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-authority/metadata-projection/v1",
+  "title": "Crowsi credential metadata projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_id", "credentials", "device_grants"],
+  "properties": {
+    "schema_id": { "const": "crowsi-credential-metadata-projection-v1" },
+    "credentials": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["credential_id", "owner_ref", "service_id", "provider_account_ref", "alias", "class", "revision", "revoked"],
+        "properties": {
+          "credential_id": { "type": "string", "maxLength": 128 },
+          "owner_ref": { "type": "string", "pattern": "^psa_", "maxLength": 128 },
+          "service_id": { "type": "string", "maxLength": 128 },
+          "provider_account_ref": { "type": "string", "maxLength": 128 },
+          "alias": { "type": "string", "maxLength": 128 },
+          "class": { "enum": ["ExclusiveExportable", "Shared", "NonExportable"] },
+          "revision": { "type": "integer", "minimum": 1 },
+          "revoked": { "type": "boolean" }
+        }
+      }
+    },
+    "device_grants": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["grant_id", "credential_id", "device_id", "grant_state", "credential_revision", "revocation_epoch", "audience", "action"],
+        "properties": {
+          "grant_id": { "type": "string", "maxLength": 128 },
+          "credential_id": { "type": "string", "maxLength": 128 },
+          "device_id": { "type": "string", "maxLength": 128 },
+          "grant_state": { "enum": ["Active", "Pending", "Consumed", "Revoked", "Expired"] },
+          "credential_revision": { "type": "integer", "minimum": 1 },
+          "revocation_epoch": { "type": "integer", "minimum": 1 },
+          "audience": { "type": "string", "pattern": "^crowsi://", "maxLength": 128 },
+          "action": { "type": "string", "maxLength": 64 }
+        }
+      }
+    }
+  }
+}

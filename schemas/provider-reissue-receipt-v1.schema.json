@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crowsi://credential-authority/provider-reissue-receipt/v1",
+  "title": "Provider reissue receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["receipt_id", "owner_ref", "service_id", "provider_account_ref", "credential_id", "previous_revision", "revision", "target_device_id", "nonce", "issued_at_epoch_ms", "signature"],
+  "properties": {
+    "receipt_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "owner_ref": { "type": "string", "pattern": "^psa_", "maxLength": 128 },
+    "service_id": { "type": "string", "maxLength": 128 },
+    "provider_account_ref": { "type": "string", "maxLength": 128 },
+    "credential_id": { "type": "string", "maxLength": 128 },
+    "previous_revision": { "type": "integer", "minimum": 1 },
+    "revision": { "type": "integer", "minimum": 2 },
+    "target_device_id": { "type": "string", "maxLength": 128 },
+    "nonce": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "issued_at_epoch_ms": { "type": "integer", "minimum": 1 },
+    "signature": { "type": "string", "minLength": 1, "maxLength": 1024 }
+  }
+}
